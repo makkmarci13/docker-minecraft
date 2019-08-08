@@ -6,7 +6,7 @@ RUN         apt update \
             && apt upgrade -y \
             && apt install -y wget  \
             && useradd -d /home/container -m container \
-            && cd /home/container
+            && cd /home/container \
             && wget https://cdn.getbukkit.org/spigot/spigot-1.12.2.jar
 
 ENV         USER=container HOME=/home/container
