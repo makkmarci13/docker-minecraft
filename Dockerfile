@@ -1,20 +1,18 @@
-FROM        ubuntu:latest
+FROM        openjdk:8u212-jre-alpine
 
 LABEL       author="makkmarci13" maintainer="makkmarci03@gmail.com"
 
 RUN         apt update \
             && apt upgrade -y \
-            && apt install -y libstdc++6 lib32stdc++6 libreadline5 libncursesw5  lib32ncursesw5 tar curl iproute2 openssl wget unzip libmysqlclient-dev \
-            && cd /usr/lib \
-            && wget https://nightly.mtasa.com/files/modules/64/libmysqlclient.so.16 \
-            && useradd -d /home/container -m container
-            
+            && apt install -y wget  \
+            && useradd -d /home/container -m container \
+            && cd /home/container
+            && wget https://cdn.getbukkit.org/spigot/spigot-1.12.2.jar
 
-USER        container
 ENV         USER=container HOME=/home/container
 
 WORKDIR     /home/container
 
 COPY        ./entrypoint.sh /entrypoint.sh
 
-CMD         ["/bin/bash", "/entrypoint.sh"]
+CMD         ./entrypoint.sh 119
