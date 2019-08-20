@@ -1,19 +1,16 @@
-FROM        ubuntu:latest
+FROM        ubuntu:18.04
 
-LABEL       author="makkmarci13" maintainer="makkmarci03@gmail.com"
+LABEL       author="Makai Marcell" maintainer="makkmarci03@gmail.com"
 
-RUN         apt update \
-            && apt upgrade -y \
-            && apt install -y tar curl iproute2 openssl wget default-jre default-jdk
-
-RUN         useradd -d /home/container -m container \
-            && cd /home/container \
-            && wget https://cdn.getbukkit.org/spigot/spigot-1.12.2.jar
-
-ENV         USER=container HOME=/home/container
-
+RUN         apt-get update \
+            && apt-get upgrade -y \
+		    && apt-get install -y wget default-jre default-jdk iproute2 \
+		    && groupadd -g 2001 container \
+		    && useradd -m -d /home/container -g 2001 -u 2001 -s /sbin/nologin container
+	
+USER        container
+ENV         HOME /home/container
 WORKDIR     /home/container
-
-COPY        ./entrypoint.sh /entrypoint.sh
-
-CMD          ["/bin/bash", "/entrypoint.sh"]
+	
+COPY        ./start.sh /start.sh
+CMD         ["/bin/bash", "/start.sh"]
